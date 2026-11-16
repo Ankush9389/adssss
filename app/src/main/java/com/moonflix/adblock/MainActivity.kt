@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
     private var isShowingAd = false
     private var pageLoadCount = 0
 
-    private val appOpenAdUnitId = "ca-app-pub-5750308983692756/9676237432"
-    private val interstitialAdUnitId = "ca-app-pub-5750308983692756/9484665742"
+    private val appOpenAdUnitId = "ca-app-pub-3940256099942544/9257395921"
+    private val interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712"
 
     private val startUrl = "https://moonflix.website/browse"
 
