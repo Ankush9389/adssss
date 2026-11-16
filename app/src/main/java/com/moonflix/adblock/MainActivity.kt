@@ -1,7 +1,9 @@
 package com.moonflix.adblock
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
@@ -38,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullscreenContainer: FrameLayout
     private lateinit var mainContent: LinearLayout
     private lateinit var adView: AdView
+    private lateinit var nativeAdWebView: WebView
+    private lateinit var btnBack: ImageButton
 
     private var customView: View? = null
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
@@ -47,8 +52,9 @@ class MainActivity : AppCompatActivity() {
     private var isShowingAd = false
     private var pageLoadCount = 0
 
-    private val appOpenAdUnitId = "ca-app-pub-3940256099942544/9257395921"
-    private val interstitialAdUnitId = "ca-app-pub-3940256099942544/1033173712"
+    private val appOpenAdUnitId = "ca-app-pub-5750308983692756/9676237432"
+    private val interstitialAdUnitId = "ca-app-pub-5750308983692756/9484665742"
+    private val smartlinkUrl = "https://asiafilm.org/4/c06e7c91ca54b103a6ef1e8c45e46d2f"
 
     private val startUrl = "https://moonflix.website/browse"
 
@@ -68,6 +74,18 @@ class MainActivity : AppCompatActivity() {
         fullscreenContainer = findViewById(R.id.fullscreenContainer)
         mainContent = findViewById(R.id.mainContent)
         adView = findViewById(R.id.adView)
+        nativeAdWebView = findViewById(R.id.nativeAdWebView)
+        btnBack = findViewById(R.id.btnBack)
+
+        setupNativeAd()
+
+        btnBack.setOnClickListener {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            } else {
+                finish()
+            }
+        }
 
         adView.loadAd(AdRequest.Builder().build())
 
@@ -111,6 +129,9 @@ class MainActivity : AppCompatActivity() {
                 if (pageLoadCount > 1 && pageLoadCount % 3 == 0) {
                     showInterstitialAd()
                 }
+                if (pageLoadCount == 2 || pageLoadCount % 5 == 0) {
+                    openSmartlink()
+                }
             }
         }
 
@@ -138,6 +159,7 @@ class MainActivity : AppCompatActivity() {
                 fullscreenContainer.visibility = View.VISIBLE
                 mainContent.visibility = View.GONE
                 progressBar.visibility = View.GONE
+                btnBack.visibility = View.GONE
 
                 // Rotate to landscape and enable true immersive fullscreen
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
@@ -148,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                 fullscreenContainer.removeAllViews()
                 fullscreenContainer.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
+                btnBack.visibility = View.VISIBLE
 
                 customViewCallback?.onCustomViewHidden()
                 customView = null
@@ -259,5 +282,37 @@ class MainActivity : AppCompatActivity() {
             }
         }
         ad.show(this)
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun setupNativeAd() {
+        nativeAdWebView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+        }
+        val nativeAdHtml = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body { margin: 0; padding: 0; background: #000000; display: flex; justify-content: center; align-items: center; }
+                </style>
+            </head>
+            <body>
+                <script async="async" data-cfasync="false" src="https://bauval.org/21/b45a39ce7653b015bcb56101c755adf1"></script>
+                <div id="container-b45a39ce7653b015bcb56101c755adf1"></div>
+            </body>
+            </html>
+        """.trimIndent()
+        nativeAdWebView.loadDataWithBaseURL("https://bauval.org", nativeAdHtml, "text/html", "UTF-8", null)
+    }
+
+    private fun openSmartlink() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(smartlinkUrl))
+            startActivity(intent)
+        } catch (_: Exception) {
+        }
     }
 }
