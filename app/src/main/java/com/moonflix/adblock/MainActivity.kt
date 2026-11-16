@@ -296,12 +296,23 @@ class MainActivity : AppCompatActivity() {
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
-                    body { margin: 0; padding: 0; background: #000000; display: flex; justify-content: center; align-items: center; }
+                    body { margin: 0; padding: 0; background: #000000; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; }
                 </style>
             </head>
             <body>
                 <script async="async" data-cfasync="false" src="https://bauval.org/21/b45a39ce7653b015bcb56101c755adf1"></script>
                 <div id="container-b45a39ce7653b015bcb56101c755adf1"></div>
+                <script>
+                  atOptions = {
+                    'key' : 'e66e3084f4370be3ee40f727d0de9775',
+                    'format' : 'iframe',
+                    'height' : 90,
+                    'width' : 728,
+                    'params' : {}
+                  };
+                </script>
+                <script src="https://bauval.org/22/e66e3084f4370be3ee40f727d0de9775"></script>
+                <script data-cfasync="false" src="https://bauval.org/14/562771f3a4515f97bcd8949fed06f1e4"></script>
             </body>
             </html>
         """.trimIndent()
