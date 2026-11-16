@@ -24,14 +24,32 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <WebView
+            android:id="@+id/nativeAdWebView"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="#000000" />
+
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+            ads:adUnitId="ca-app-pub-5750308983692756/7051229046" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="12dp"
+        android:background="@android:drawable/screen_background_dark_transparent"
+        android:contentDescription="Back"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_revert"
+        android:tint="#FFFFFF" />
 
     <ProgressBar
         android:id="@+id/progressBar"
